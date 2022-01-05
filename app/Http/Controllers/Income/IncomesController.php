@@ -53,6 +53,20 @@ class IncomesController extends Controller
             return response()->json(['error' => $validator->errors(), 'Validation Error', 'status_code'=> 201]);
         }
 
+
+        if($request->file()) {
+            $request->validate([
+                'file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:4096'
+            ]);
+
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('app/public', $fileName, 'public');
+
+
+            $income_file_path = '/storage/' . $filePath;
+            $data["income_file_path"] = $income_file_path;
+        }
+
         $incomes = Incomes::create($data);
 
         return response()->json([ 'msg'=> 'Customer Income Data Created successfully.', 'data'=> new IncomeResource($incomes), 'status_code'=> 200]);
@@ -106,6 +120,19 @@ class IncomesController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors(), 'Validation Error',  'status_code'=> 201]);
+        }
+
+        if($request->file()) {
+            $request->validate([
+                'file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:4096'
+            ]);
+
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('app/public', $fileName, 'public');
+
+
+            $income_file_path = '/storage/' . $filePath;
+            $data["income_file_path"] = $income_file_path;
         }
 
         $incomes = Incomes::find($id);

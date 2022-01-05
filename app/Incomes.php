@@ -14,7 +14,7 @@ class Incomes extends Model
      * @var array
      */
     protected $fillable = [
-        'customer_id','description', 'amount','income_date', 'tax_year'
+        'customer_id','description', 'amount','income_date', 'tax_year', 'income_file_path'
     ];
 
     public function customer()

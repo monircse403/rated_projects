@@ -51,6 +51,19 @@ class CustomersController extends Controller
             return response()->json(['error' => $validator->errors(), 'Validation Error', 'status_code'=> 201]);
         }
 
+        if($request->file()) {
+            $request->validate([
+                'file' => 'required|mimes:jpg,jpeg,png,gif|max:4096'
+            ]);
+
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('app/profile_pic', $fileName, 'public');
+
+
+            $profile_pic= '/storage/' . $filePath;
+            $data["profile_pic"] = $profile_pic;
+        }
+
         $customer = Customers::create($data);
 
         return response()->json(['msg'=> 'Created successfully.', 'data'=> new CustomerResource($customer), 'status_code'=> 200]);
@@ -102,6 +115,19 @@ class CustomersController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors(), 'Validation Error','status_code'=> 201] );
+        }
+
+        if($request->file()) {
+            $request->validate([
+                'file' => 'required|mimes:jpg,jpeg,png,gif|max:4096'
+            ]);
+
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('app/profile_pic', $fileName, 'public');
+
+
+            $profile_pic= '/storage/' . $filePath;
+            $data["profile_pic"] = $profile_pic;
         }
 
         $customer = Customers::find($id);

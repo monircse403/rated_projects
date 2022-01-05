@@ -16,7 +16,7 @@ class Customers extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email','utr'
+        'name', 'email','utr', 'dob', 'phone', 'profile_pic'
     ];
 
     public function customerIncomes(){
